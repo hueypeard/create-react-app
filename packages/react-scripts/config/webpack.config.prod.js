@@ -273,8 +273,7 @@ module.exports = {
                         // skodel:start
                         importLoaders: 1,
                         minimize: true,
-                        sourceMap: true,
-                        localIdentName: "[local]___[hash:base64:5]"
+                        sourceMap: true
                         // skodel:end
                       },
                     },
