@@ -36,6 +36,18 @@ const plugins = [
       regenerator: true,
     },
   ],
+  [
+    require.resolve('babel-root-import'),
+    {
+      rootPathSuffix: 'src'
+    }
+  ],
+  [
+    require.resolve('babel-plugin-react-css-modules'),
+    {
+      generateScopedName: '[local]___[hash:base64:5]'
+    }
+  ]
 ];
 
 // This is similar to how `env` works in Babel:
