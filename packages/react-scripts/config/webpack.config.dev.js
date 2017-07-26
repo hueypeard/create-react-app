@@ -282,6 +282,65 @@ module.exports = {
               }
             ],
           },
+          {
+            test: /\.json$/,
+            use: [
+              {
+                loader: require.resolve("json-loader")
+              }
+            ]
+          },
+          {
+            test: /\.(graphql|gql)$/,
+            exclude: /node_modules/,
+            use: [{ loader: require.resolve("graphql-tag/loader") }]
+          },
+          // "file" loader for icon svgs
+          {
+            test: /\/icons\/sk-.*?\.svg$/,
+            use: [
+              {
+                loader: require.resolve("babel-loader")
+              },
+              {
+                loader: require.resolve("react-svg-loader"),
+                options: {
+                  jsx: true,
+                  svgo: {
+                    plugins: [
+                      { removeTitle: true },
+                      { removeUselessStrokeAndFill: true },
+                      { removeDesc: true },
+                      { convertColors: { currentColor: true } }
+                    ]
+                  }
+                }
+              }
+            ]
+          },
+          // file loader for normal svgs
+          {
+            test: /\.svg$/,
+            exclude: /\/icons\/sk-.*?\.svg$/,
+            use: [
+              {
+                loader: require.resolve("babel-loader")
+              },
+              {
+                loader: require.resolve("react-svg-loader"),
+                options: {
+                  jsx: true,
+                  svgo: {
+                    plugins: [
+                      { removeTitle: true },
+                      { removeUselessStrokeAndFill: true },
+                      { removeDesc: true }
+                    ]
+                  }
+                }
+              }
+            ]
+          },
           // skodel:end
           // "file" loader makes sure those assets get served by WebpackDevServer.
           // When you `import` an asset, you get its (virtual) filename.
@@ -303,67 +362,6 @@ module.exports = {
           },
         ],
       },
-      // skodel:start
-      {
-        test: /\.json$/,
-        use: [
-          {
-            loader: require.resolve("json-loader")
-          }
-        ]
-      },
-      {
-        test: /\.(graphql|gql)$/,
-        exclude: /node_modules/,
-        use: [{ loader: require.resolve("graphql-tag/loader") }]
-      },
-      // "file" loader for icon svgs
-      {
-        test: /\/icons\/sk-.*?\.svg$/,
-        use: [
-          {
-            loader: require.resolve("babel-loader")
-          },
-          {
-            loader: require.resolve("react-svg-loader"),
-            options: {
-              jsx: true,
-              svgo: {
-                plugins: [
-                  { removeTitle: true },
-                  { removeUselessStrokeAndFill: true },
-                  { removeDesc: true },
-                  { convertColors: { currentColor: true } }
-                ]
-              }
-            }
-          }
-        ]
-      },
-      // file loader for normal svgs
-      {
-        test: /\.svg$/,
-        exclude: /\/icons\/sk-.*?\.svg$/,
-        use: [
-          {
-            loader: require.resolve("babel-loader")
-          },
-          {
-            loader: require.resolve("react-svg-loader"),
-            options: {
-              jsx: true,
-              svgo: {
-                plugins: [
-                  { removeTitle: true },
-                  { removeUselessStrokeAndFill: true },
-                  { removeDesc: true }
-                ]
-              }
-            }
-          }
-        ]
-      }
-      // skodel:end
       // ** STOP ** Are you adding a new loader?
       // Make sure to add the new loader(s) before the "file" loader.
     ],
