@@ -50,8 +50,12 @@ module.exports = function(
 
   // skodel:start
   appPackage['lint-staged'] = {
-    '*.{js,jsx,css,scss,json}': [
+    '*.{js,jsx,css,scss}': [
       './node_modules/.bin/prettier --write',
+      'git add'
+    ],
+    '*.{json}': [
+      './node_modules/.bin/prettier --write --parser json',
       'git add'
     ],
     '*.{gql,graphql}': [
