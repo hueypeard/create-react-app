@@ -101,7 +101,7 @@ module.exports = {
     // `web` extension prefixes have been added for better support
     // for React Native Web.
     // skodel:start
-    extensions: ['.web.js', '.js', '.json', '.web.jsx', '.jsx', '.scss', '.css', '.gql', '.graphql'],
+    extensions: ['.web.js', '.js', '.json', '.web.jsx', '.jsx', '.svg', '.scss', '.css', '.gql', '.graphql'],
     // skodel:end
     alias: {
       // @remove-on-eject-begin
