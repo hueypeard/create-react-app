@@ -201,7 +201,7 @@ module.exports = {
                 loader: require.resolve('css-loader'),
                 options: {
                   // skodel:start
-                  importLoaders: true,
+                  importLoaders: 1,
                   modules: true,
                   localIdentName: "[local]___[hash:base64:5]"
                   // skodel:end
@@ -247,7 +247,7 @@ module.exports = {
                 loader: require.resolve('css-loader'),
                 options: {
                   // skodel:start
-                  importLoaders: true,
+                  importLoaders: 1,
                   modules: true,
                   localIdentName: "[local]___[hash:base64:5]"
                   // skodel:end

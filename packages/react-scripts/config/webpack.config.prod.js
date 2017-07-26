@@ -211,7 +211,7 @@ module.exports = {
                       loader: require.resolve('css-loader'),
                       options: {
                         // skodel:start
-                        importLoaders: true,
+                        importLoaders: 1,
                         minimize: true,
                         sourceMap: true,
                         modules: true,
@@ -267,7 +267,7 @@ module.exports = {
                       loader: require.resolve('css-loader'),
                       options: {
                         // skodel:start
-                        importLoaders: true,
+                        importLoaders: 1,
                         minimize: true,
                         sourceMap: true,
                         localIdentName: "[local]___[hash:base64:5]"
@@ -384,7 +384,7 @@ module.exports = {
             options: {
               name: 'static/media/[name].[hash:8].[ext]',
             },
-          },
+          }
           // ** STOP ** Are you adding a new loader?
           // Make sure to add the new loader(s) before the "file" loader.
         ],
