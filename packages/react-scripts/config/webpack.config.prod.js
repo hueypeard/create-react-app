@@ -376,10 +376,10 @@ module.exports = {
             loader: require.resolve('file-loader'),
             // Exclude `js` files to keep "css" loader working as it injects
             // it's runtime that would otherwise processed through "file" loader.
-            // Also exclude `html` and `json` extensions so they get processed
+            // Also exclude `html` extensions so they get processed
             // by webpacks internal loaders.
             // skodel:start
-            exclude: [/\.(js|jsx)$/, /\.html$/, /\.json$/, /\.scss$/, /\.json$/, /\.svg$/, /\.(graphql|gql)$/],
+            exclude: [/\.html$/, /\.(js|jsx)$/, /\.css$/, /\.scss$/, /\.json$/, /\.svg$/, /\.(graphql|gql)$/],
             // skodel:end
             options: {
               name: 'static/media/[name].[hash:8].[ext]',
