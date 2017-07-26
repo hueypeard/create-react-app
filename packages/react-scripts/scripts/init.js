@@ -43,7 +43,19 @@ module.exports = function(
     build: 'react-scripts build',
     test: 'react-scripts test --env=jsdom',
     eject: 'react-scripts eject',
+    // skodel:start
+    precommit: 'lint-staged'
+    // skodel:end
   };
+
+  // skodel:start
+  appPackage['lint-staged'] = {
+    '*.js': [
+      'node ./node_modules/prettier/bin/prettier.js --write',
+      'git add'
+    ]
+  };
+  // skodel:end
 
   fs.writeFileSync(
     path.join(appPath, 'package.json'),

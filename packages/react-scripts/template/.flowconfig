@@ -1,0 +1,13 @@
+[ignore]
+.*/react/node_modules/.*
+.*/fbjs/node_modules/.*
+.*/node_modules/invariant/.*
+[include]
+.*/node_modules/react
+.*/node_modules/fbjs/lib
+.*/node_modules/immutable
+[libs]
+.*node_modules/fbjs/flow/lib
+[options]
+module.name_mapper='^~/\(.*\)$' -> '<PROJECT_ROOT>/src/\1'
+suppress_comment= \\(.\\|\n\\)*\\$FlowFixMe

@@ -11,6 +11,8 @@
 const babelJest = require('babel-jest');
 
 module.exports = babelJest.createTransformer({
-  presets: [require.resolve('babel-preset-react-app')],
+  // skodel:start
+  presets: [require.resolve('skodel-babel-preset-react-app')],
+  // skodel:end
   babelrc: false,
 });

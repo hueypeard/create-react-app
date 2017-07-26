@@ -22,6 +22,10 @@ const eslintFormatter = require('react-dev-utils/eslintFormatter');
 const ModuleScopePlugin = require('react-dev-utils/ModuleScopePlugin');
 const paths = require('./paths');
 const getClientEnvironment = require('./env');
+// skodel:start
+const bourbon = require("bourbon");
+const UglifyJSPlugin = require("uglifyjs-webpack-plugin");
+// skodel:end
 
 // Webpack uses `publicPath` to determine where the app is being served from.
 // It requires a trailing slash, or the file assets will get an incorrect path.
@@ -96,7 +100,9 @@ module.exports = {
     // https://github.com/facebookincubator/create-react-app/issues/290
     // `web` extension prefixes have been added for better support
     // for React Native Web.
-    extensions: ['.web.js', '.js', '.json', '.web.jsx', '.jsx'],
+    // skodel:start
+    extensions: ['.web.js', '.js', '.json', '.web.jsx', '.jsx', '.scss', '.css', '.gql', '.graphql'],
+    // skodel:end
     alias: {
       // @remove-on-eject-begin
       // Resolve Babel runtime relative to react-scripts.
@@ -175,7 +181,9 @@ module.exports = {
             options: {
               // @remove-on-eject-begin
               babelrc: false,
-              presets: [require.resolve('babel-preset-react-app')],
+              // skodel:start
+              presets: [require.resolve('skodel-babel-preset-react-app')],
+              // skodel:end
               // @remove-on-eject-end
               compact: true,
             },
@@ -202,9 +210,13 @@ module.exports = {
                     {
                       loader: require.resolve('css-loader'),
                       options: {
-                        importLoaders: 1,
+                        // skodel:start
+                        importLoaders: true,
                         minimize: true,
                         sourceMap: true,
+                        modules: true,
+                        localIdentName: "[local]___[hash:base64:5]"
+                        // skodel:end
                       },
                     },
                     {
@@ -227,6 +239,15 @@ module.exports = {
                         ],
                       },
                     },
+                    // skodel:start
+                    {
+                      loader: require.resolve("sass-loader"),
+                      options: {
+                        includePaths: [ ...bourbon.includePaths ],
+                        sourceMap: true
+                      }
+                    }
+                    // skodel:end
                   ],
                 },
                 extractTextPluginOptions
@@ -234,6 +255,119 @@ module.exports = {
             ),
             // Note: this won't work without `new ExtractTextPlugin()` in `plugins`.
           },
+          // skodel:start
+          {
+            test: /\.scss$/,
+            loader: ExtractTextPlugin.extract(
+              Object.assign(
+                {
+                  fallback: require.resolve('style-loader'),
+                  use: [
+                    {
+                      loader: require.resolve('css-loader'),
+                      options: {
+                        // skodel:start
+                        importLoaders: true,
+                        minimize: true,
+                        sourceMap: true,
+                        localIdentName: "[local]___[hash:base64:5]"
+                        // skodel:end
+                      },
+                    },
+                    {
+                      loader: require.resolve('postcss-loader'),
+                      options: {
+                        // Necessary for external CSS imports to work
+                        // https://github.com/facebookincubator/create-react-app/issues/2677
+                        ident: 'postcss',
+                        plugins: () => [
+                          require('postcss-flexbugs-fixes'),
+                          autoprefixer({
+                            browsers: [
+                              '>1%',
+                              'last 4 versions',
+                              'Firefox ESR',
+                              'not ie < 9', // React doesn't support IE8 anyway
+                            ],
+                            flexbox: 'no-2009',
+                          }),
+                        ],
+                      },
+                    },
+                    {
+                      loader: require.resolve("sass-loader"),
+                      options: {
+                        includePaths: [ ...bourbon.includePaths ],
+                        sourceMap: true
+                      }
+                    }
+                  ],
+                },
+                extractTextPluginOptions
+              )
+            ),
+            // Note: this won't work without `new ExtractTextPlugin()` in `plugins`.
+          },
+          {
+            test: /\.json$/,
+            use: [
+              {
+                loader: require.resolve("json-loader")
+              }
+            ]
+          },
+          {
+            test: /\.(graphql|gql)$/,
+            exclude: /node_modules/,
+            use: [{ loader: require.resolve("graphql-tag/loader") }]
+          },
+          // "file" loader for icon svgs
+          {
+            test: /\/icons\/sk-.*?\.svg$/,
+            use: [
+              {
+                loader: require.resolve("babel-loader")
+              },
+              {
+                loader: require.resolve("react-svg-loader"),
+                options: {
+                  jsx: true,
+                  svgo: {
+                    plugins: [
+                      { removeTitle: true },
+                      { removeUselessStrokeAndFill: true },
+                      { removeDesc: true },
+                      { convertColors: { currentColor: true } }
+                    ]
+                  }
+                }
+              }
+            ]
+          },
+          // file loader for normal svgs
+          {
+            test: /\.svg$/,
+            exclude: /\/icons\/sk-.*?\.svg$/,
+            use: [
+              {
+                loader: require.resolve("babel-loader")
+              },
+              {
+                loader: require.resolve("react-svg-loader"),
+                options: {
+                  jsx: true,
+                  svgo: {
+                    plugins: [
+                      { removeTitle: true },
+                      { removeUselessStrokeAndFill: true },
+                      { removeDesc: true }
+                    ]
+                  }
+                }
+              }
+            ]
+          },
+          // skodel:end
           // "file" loader makes sure assets end up in the `build` folder.
           // When you `import` an asset, you get its filename.
           // This loader don't uses a "test" so it will catch all modules
@@ -244,7 +378,9 @@ module.exports = {
             // it's runtime that would otherwise processed through "file" loader.
             // Also exclude `html` and `json` extensions so they get processed
             // by webpacks internal loaders.
-            exclude: [/\.js$/, /\.html$/, /\.json$/],
+            // skodel:start
+            exclude: [/\.(js|jsx)$/, /\.html$/, /\.json$/, /\.scss$/, /\.json$/, /\.svg$/, /\.(graphql|gql)$/],
+            // skodel:end
             options: {
               name: 'static/media/[name].[hash:8].[ext]',
             },
@@ -285,7 +421,8 @@ module.exports = {
     // Otherwise React will be compiled in the very slow development mode.
     new webpack.DefinePlugin(env.stringified),
     // Minify the code.
-    new webpack.optimize.UglifyJsPlugin({
+    // skodel:start
+    new UglifyJSPlugin({
       compress: {
         warnings: false,
         // Disabled because of an issue with Uglify breaking seemingly valid code:
@@ -302,6 +439,7 @@ module.exports = {
       },
       sourceMap: true,
     }),
+    // skodel:end
     // Note: this won't work without ExtractTextPlugin.extract(..) in `loaders`.
     new ExtractTextPlugin({
       filename: cssFilename,
@@ -348,6 +486,16 @@ module.exports = {
     // https://github.com/jmblog/how-to-optimize-momentjs-with-webpack
     // You can remove this if you don't use Moment.js:
     new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
+    // skodel:start
+    new webpack.LoaderOptionsPlugin({
+      options: {
+        sassLoader: {
+          includePaths: bourbon.includePaths
+        },
+        context: path.resolve(paths.appSrc, "../")
+      }
+    })
+    // skodel:end
   ],
   // Some libraries import Node modules but don't use them in the browser.
   // Tell Webpack to provide empty mocks for them so importing them works.
