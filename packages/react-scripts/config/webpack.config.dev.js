@@ -251,7 +251,8 @@ module.exports = {
                 loader: require.resolve('css-loader'),
                 options: {
                   // skodel:start
-                  importLoaders: 1
+                  importLoaders: 1,
+                  sourceMap: true
                   // skodel:end
                 },
               },
@@ -261,6 +262,7 @@ module.exports = {
                   // Necessary for external CSS imports to work
                   // https://github.com/facebookincubator/create-react-app/issues/2677
                   ident: 'postcss',
+                  sourceMap: true,
                   plugins: () => [
                     require('postcss-flexbugs-fixes'),
                     autoprefixer({
