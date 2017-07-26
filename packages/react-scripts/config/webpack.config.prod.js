@@ -265,7 +265,7 @@ module.exports = {
             loader: ExtractTextPlugin.extract(
               Object.assign(
                 {
-                  fallback: require.resolve('style-loader'),
+                  fallback: 'style-loader',
                   use: [
                     {
                       loader: 'css-loader',
