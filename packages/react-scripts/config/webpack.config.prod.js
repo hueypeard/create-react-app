@@ -206,10 +206,10 @@ module.exports = {
             loader: ExtractTextPlugin.extract(
               Object.assign(
                 {
-                  fallback: require.resolve('style-loader'),
+                  fallback: 'style-loader',
                   use: [
                     {
-                      loader: require.resolve('css-loader'),
+                      loader: 'css-loader',
                       options: {
                         // skodel:start
                         importLoaders: 1,
@@ -221,7 +221,7 @@ module.exports = {
                       },
                     },
                     {
-                      loader: require.resolve('postcss-loader'),
+                      loader: 'postcss-loader',
                       options: {
                         // Necessary for external CSS imports to work
                         // https://github.com/facebookincubator/create-react-app/issues/2677
@@ -245,7 +245,7 @@ module.exports = {
                     },
                     // skodel:start
                     {
-                      loader: require.resolve("sass-loader"),
+                      loader: 'sass-loader',
                       options: {
                         includePaths: [ ...bourbon.includePaths ],
                         sourceMap: true
@@ -268,7 +268,7 @@ module.exports = {
                   fallback: require.resolve('style-loader'),
                   use: [
                     {
-                      loader: require.resolve('css-loader'),
+                      loader: 'css-loader',
                       options: {
                         // skodel:start
                         importLoaders: 1,
@@ -279,7 +279,7 @@ module.exports = {
                       },
                     },
                     {
-                      loader: require.resolve('postcss-loader'),
+                      loader: "postcss-loader",
                       options: {
                         // Necessary for external CSS imports to work
                         // https://github.com/facebookincubator/create-react-app/issues/2677
@@ -300,7 +300,7 @@ module.exports = {
                       },
                     },
                     {
-                      loader: require.resolve("sass-loader"),
+                      loader: 'sass-loader',
                       options: {
                         includePaths: [ ...bourbon.includePaths ],
                         sourceMap: true
