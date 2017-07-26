@@ -25,6 +25,15 @@ const getClientEnvironment = require('./env');
 // skodel:start
 const bourbon = require("bourbon");
 const UglifyJSPlugin = require("uglifyjs-webpack-plugin");
+const babelOptions = {
+  // @remove-on-eject-begin
+  babelrc: false,
+  // skodel:start
+  presets: [require.resolve('skodel-babel-preset-react-app')],
+  // skodel:end
+  // @remove-on-eject-end
+  compact: true,
+};
 // skodel:end
 
 // Webpack uses `publicPath` to determine where the app is being served from.
@@ -178,15 +187,7 @@ module.exports = {
             test: /\.(js|jsx)$/,
             include: paths.appSrc,
             loader: require.resolve('babel-loader'),
-            options: {
-              // @remove-on-eject-begin
-              babelrc: false,
-              // skodel:start
-              presets: [require.resolve('skodel-babel-preset-react-app')],
-              // skodel:end
-              // @remove-on-eject-end
-              compact: true,
-            },
+            options: babelOptions
           },
           // The notation here is somewhat confusing.
           // "postcss" loader applies autoprefixer to our CSS.
@@ -326,7 +327,8 @@ module.exports = {
             test: /\/icons\/sk-.*?\.svg$/,
             use: [
               {
-                loader: require.resolve("babel-loader")
+                loader: require.resolve("babel-loader"),
+                options: babelOptions
               },
               {
                 loader: require.resolve("react-svg-loader"),
@@ -350,7 +352,8 @@ module.exports = {
             exclude: /\/icons\/sk-.*?\.svg$/,
             use: [
               {
-                loader: require.resolve("babel-loader")
+                loader: require.resolve("babel-loader"),
+                options: babelOptions
               },
               {
                 loader: require.resolve("react-svg-loader"),

@@ -34,6 +34,19 @@ const publicUrl = '';
 // Get environment variables to inject into our app.
 const env = getClientEnvironment(publicUrl);
 
+const babelOptions = {
+  // @remove-on-eject-begin
+  babelrc: false,
+  // skodel:start
+  presets: [require.resolve('skodel-babel-preset-react-app')],
+  // skodel:end
+  // @remove-on-eject-end
+  // This is a feature of `babel-loader` for webpack (not Babel itself).
+  // It enables caching results in ./node_modules/.cache/babel-loader/
+  // directory for faster rebuilds.
+  cacheDirectory: true,
+};
+
 // This is the development configuration.
 // It is focused on developer experience and fast rebuilds.
 // The production configuration is different and lives in a separate file.
@@ -175,18 +188,9 @@ module.exports = {
             test: /\.(js|jsx)$/,
             include: paths.appSrc,
             loader: require.resolve('babel-loader'),
-            options: {
-              // @remove-on-eject-begin
-              babelrc: false,
-              // skodel:start
-              presets: [require.resolve('skodel-babel-preset-react-app')],
-              // skodel:end
-              // @remove-on-eject-end
-              // This is a feature of `babel-loader` for webpack (not Babel itself).
-              // It enables caching results in ./node_modules/.cache/babel-loader/
-              // directory for faster rebuilds.
-              cacheDirectory: true,
-            },
+            // skodel:start
+            options: babelOptions,
+            // skodel:end
           },
           // "postcss" loader applies autoprefixer to our CSS.
           // "css" loader resolves paths in CSS and adds assets as dependencies.
@@ -300,7 +304,8 @@ module.exports = {
             test: /\/icons\/sk-.*?\.svg$/,
             use: [
               {
-                loader: require.resolve("babel-loader")
+                loader: require.resolve("babel-loader"),
+                options: babelOptions
               },
               {
                 loader: require.resolve("react-svg-loader"),
@@ -324,7 +329,8 @@ module.exports = {
             exclude: /\/icons\/sk-.*?\.svg$/,
             use: [
               {
-                loader: require.resolve("babel-loader")
+                loader: require.resolve("babel-loader"),
+                options: babelOptions
               },
               {
                 loader: require.resolve("react-svg-loader"),
