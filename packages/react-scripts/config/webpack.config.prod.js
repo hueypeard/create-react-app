@@ -16,7 +16,7 @@ const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 // skodel:start
-const AssetMapPlugin = require('asset-map-webpack-plugin');
+const AssetMapPlugin = require('asset-map-webpack-plugin').default;
 // skodel:end
 const InterpolateHtmlPlugin = require('react-dev-utils/InterpolateHtmlPlugin');
 // skodel:start
@@ -463,7 +463,7 @@ module.exports = {
     // skodel:start
     new AssetMapPlugin(
       'asset-manifest.json',
-      process.env.CDN_BASE_PATH || ''
+      ''
     ),
     // // Generate a service worker script that will precache, and keep up to date,
     // // the HTML & assets that are part of the Webpack build.
